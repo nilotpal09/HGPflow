@@ -1,0 +1,191 @@
+detector: CLIC
+
+max_particles: 60
+dataset_type: mini
+
+
+# BAD IDXS HACK
+filter_clip_bad_idxs: true
+
+features:
+    track_feat0_vars: [
+        'pt', 'eta', 'cosphi', 'sinphi', 'd0', 'z0',
+        'eta_int', 'cosphi_int', 'sinphi_int',
+        'chi2', 'ndf', 'radiusofinnermosthit', 'tanlambda', 'omega']
+    topo_feat0_vars: [
+        'e', 'eta', 'rho', 'cosphi', 'sinphi',         
+        'sigma_eta', 'sigma_phi', 'sigma_rho', 'em_frac']
+    node_skip_feat0_vars: {
+        'track': [pt  , null, null, eta, cosphi, sinphi, d0  , z0  , eta_int, cosphi_int, sinphi_int, null     , null     , null     , null   ],
+        'topo' : [null, e   , rho , eta, cosphi, sinphi, null, null, null   , null      , null      , sigma_eta, sigma_phi, sigma_rho, em_frac]
+    }
+
+
+data_loading:
+    branches_to_read:
+        track_vars: [
+            'track_pt', 'track_eta', 'track_phi', 'track_d0', 'track_z0',
+            'track_eta_int', 'track_phi_int',
+            'track_chi2', 'track_ndf', 
+            'track_radiusofinnermosthit', 'track_tanlambda', 'track_omega',
+            'track_particle_idx']
+        topo_vars: [
+            'topo_eta', 'topo_phi', 'topo_rho', 'topo_e', 
+            'topo_sigma_eta', 'topo_sigma_phi', 'topo_sigma_rho',
+            'topo_energy_ecal', 'topo_energy_hcal', 'topo_energy_other',
+            'topo2particle_topo_idx', 'topo2particle_particle_idx', 'topo2particle_energy']
+        particle_vars: [
+            'particle_pt', 'particle_eta', 'particle_phi', 'particle_pdgid', 'particle_e',
+            'particle_track_idx']
+        event_vars: ['eventNumber']
+
+    branches_rename: {
+        'track_pt': 'track_pt_raw',
+        'track_eta': 'track_eta_raw',
+        'topo_e': 'topo_e_raw',
+        'topo_eta': 'topo_eta_raw',
+        'topo_energy_ecal': 'topo_ecal_e_raw',
+        'topo_energy_hcal': 'topo_hcal_e_raw',
+        'particle_pt': 'particle_pt_raw',
+        'particle_e': 'particle_e_raw',
+        'particle_eta': 'particle_eta_raw',
+
+        'topo_particle_energies': 'topo_particle_es',
+        'eventNumber': 'event_number'}
+
+
+data_processing:
+
+    vars_sin_cos: [
+        'track_phi', 'track_phi_int', 'topo_phi']
+    vars_sin_cos_og_delete: []
+
+    vars_to_transform: {
+        'track_pt_raw': 'pt',
+        'track_eta_raw': 'eta',
+        'track_d0': 'd0',
+        'track_z0': 'z0',
+
+        'track_eta_int': 'eta',
+        'track_chi2': 'chi2',
+        'track_ndf': 'ndf',
+        'track_radiusofinnermosthit': 'radiusofinnermosthit',
+        'track_tanlambda': 'tanlambda',
+        'track_omega': 'omega',
+
+        'topo_e_raw': 'e',
+        'topo_eta_raw': 'eta',
+        'topo_rho': 'rho',
+        'topo_sigma_eta': 'sigma_eta',
+        'topo_sigma_phi': 'sigma_phi',
+        'topo_sigma_rho': 'sigma_rho',
+
+        'particle_pt_raw': 'pt',
+        'particle_e_raw': 'e',
+        'particle_eta_raw': 'eta'
+    }
+
+
+getitem_retun:
+    particle_vars: [
+        'pt', 'pt_raw', 'eta', 'eta_raw',
+        'e', 'e_raw',
+        'phi', 'class']
+    event_vars: ['eventNumber']
+    additional_vars: {
+        'track': ['pt', 'pt_raw', 'eta', 'phi'],
+        'topo': ['e_raw', 'eta_raw', 'phi', 'em_frac'],
+    }
+
+
+
+transformation_dict:
+    eta: {
+        "transformation": null,
+        "scale_mode": "min_max",
+        "min": -3, "max": 3, "range": [-1,1]}
+
+    rho: {
+        "transformation": null,
+        "scale_mode": "min_max",
+        "mean": 1244.006, "std": 503.131,
+        "min": 1.920, "max": 3000.000, "range": [-1,1], "rho info": "custom input; max was 5335.310"}
+
+    pt: {
+        "transformation": "pow(x,m)",
+        "m": 0.5,
+        "scale_mode": "min_max",
+        "mean": 1.186, "std": 1.100,
+        "min": 0.000, "max": 13.570, "range": [-1,1], "pt info": "custom input; max was 19.124"}
+    
+    e: {
+        "transformation": "pow(x,m)",
+        "m": 0.5,
+        "scale_mode": "min_max",
+        "mean": 1.728, "std": 1.531,
+        "min": 0.020, "max": 15.136, "range": [-1,1]}
+
+    sigma_eta: {
+        "transformation": "pow(x,m)",
+        "m": 0.5,
+        "scale_mode": "min_max",
+        "mean": 0.158, "std": 0.083,
+        "min": 0.000, "max": 0.941, "range": [-1,1]}
+
+    sigma_phi: {
+        "transformation": "pow(x,m)",
+        "m": 0.5,
+        "scale_mode": "min_max",
+        "mean": 0.172, "std": 0.097,
+        "min": 0.000, "max": 1.446, "range": [-1,1]}
+
+    sigma_rho: {
+        "transformation": "pow(x,m)",
+        "m": 0.5,
+        "scale_mode": "min_max",
+        "mean": 6.497, "std": 3.263,
+        "min": 0.000, "max": 41.808, "range": [-1,1]}
+
+    d0: {
+        "transformation": null,
+        "scale_mode": "min_max",
+        "mean": -0.002, "std": 2.254,
+        "min": -25.000, "max": 25.000, "range": [-1,1], "d0 info": "custom input, min was -125.337, max was 174.728"}
+
+    z0: {
+        "transformation": null,
+        "scale_mode": "min_max",
+        "mean": -0.002, "std": 2.254,
+        "min": -400.000, "max": 400.000, "range": [-1,1], "z0 info": "custom input, min was -125.337, max was 174.728"}
+
+    chi2: {
+        "transformation": "pow(x,m)",
+        "m": 0.5,
+        "scale_mode": "min_max",
+        "mean": 4.569, "std": 2.694,
+        "min": 0.000, "max": 100.000, "range": [-1,1], "chi2 info": "custom input, min was 0.003, max was 2161.919"}
+
+    ndf: {
+        "transformation": null,
+        "scale_mode": "min_max",
+        "mean": 17.751, "std": 7.459,
+        "min": 1.000, "max": 51.000, "range": [-1,1]}
+
+    radiusofinnermosthit: {
+        "transformation": "pow(x,m)",
+        "m": 0.5,
+        "scale_mode": "min_max",
+        "mean": 6.196, "std": 2.183,
+        "min": 5.583, "max": 35.718, "range": [-1,1]}
+
+    tanlambda: {
+        "transformation": null,
+        "scale_mode": "min_max",
+        "mean": -0.000, "std": 2.264,
+        "min": -5.000, "max": 5.000, "range": [-1,1], "tanlambda info": "custom input, min was -9.881, max was 10.653"}
+
+    omega: {
+        "transformation": null,
+        "scale_mode": "standard",
+        "mean": 0.000, "std": 0.003,
+        "min": -0.033, "max": 0.033, "range": [-1,1]}

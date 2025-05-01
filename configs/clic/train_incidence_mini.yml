@@ -1,0 +1,55 @@
+project_name: hgpflow_v2
+run_name: clicxminixbig1x2xs1
+
+device: cuda
+num_devices: 1
+
+train_components: [hg_model] # hg_model | hyperedge | [hg_model, hyperedge]
+
+resume_from_checkpoint: null
+
+num_epochs: 100
+eval_every_n_epoch: 1
+
+batchsize_train: 256 # 128
+batchsize_val: 512 # 256
+
+apply_cells_threshold: false # true | false
+n_cells_threshold: 3000
+
+path_train: |
+    [f'path to clic/dijet/chunks/merged_chunk_{n}_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root' for n in range(10)] + \
+    [f'path to clic/dijet/chunks/merged_chunk_{n}_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root' for n in range(20, 210)]
+
+path_val  : [
+    path to clic/dijet/chunks/merged_chunk_10_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root,
+    path to clic/dijet/chunks/merged_chunk_15_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root
+]
+
+reduce_ds_train: -1
+reduce_ds_val: -1
+
+num_workers: 10 # 3 # 5
+n_ray: 0
+
+learning_rate: 1.0e-4
+lr_scheduler:
+    name: CustomLRScheduler
+    warm_start_epochs: 0.0
+    cosine_epochs: 0.999 # doesn't like 1.0
+    eta_min: 5.0e-6
+    last_epoch: -1
+
+base_root_dir: ...
+
+ind_loss_wt: 1.0
+inc_loss_wt: 1.0
+track_fix_wt: 1.e+5
+
+train_log_every_n_steps: 20
+n_event_displays: 5
+event_idxs_to_display: [15, 47, 65, 66, 96] # overwrites n_event_displays
+
+do_consistent_match: true # true | false (paper)
+loss_discount_factor: "torch.ones(12)" # "torch.linspace(1.0, 0.2, num=16)" | "torch.ones(16)"  
+random_bptt: false # true | false (false is from the paper)

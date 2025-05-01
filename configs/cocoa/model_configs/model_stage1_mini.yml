@@ -1,0 +1,72 @@
+name: hgpflow_mini
+
+# model part 1
+node_prep_model:
+    type: mini
+    
+    track_init_net:
+        input_dim: 24
+        output_dim: 126
+        hidden_layers: [128]
+        activation: 'LeakyReLU'
+        norm_layer: 'LayerNorm'
+
+    topo_init_net:
+        input_dim: 8
+        output_dim: 126
+        hidden_layers: [128]
+        activation: 'LeakyReLU'
+        norm_layer: 'LayerNorm'
+
+    transformer:
+        embed_dim: 128
+        num_layers: 4
+        mha_config:   
+            enable_flash_attn: True # True | False
+            num_heads: 4
+        dense_config: 
+            hidden_layers: [128]
+            activation: LeakyReLU
+            norm_layer: LayerNorm
+        context_dim: 126 # d_hid
+        out_dim: 114
+
+    add_skip_feat: True
+
+# model part 2
+hg_model:
+    type: iterative_refiner # iterative_refiner | sup_attn
+
+    T_TOTAL: 12
+    T_BPTT: 3
+    N_BPTT: 2
+
+    d_in: 128
+    d_hid: 128
+
+    init_edges: 
+        type: random # random | embeding
+        embedding_dim: 5 # only for type: embedding
+
+    deepset_n:
+        hidden_layers: [256, 256, 128]
+
+    transformer_e:
+        embed_dim: 256
+        num_layers: 1
+        mha_config:   
+            enable_flash_attn: False # True | False
+            num_heads: 4
+        dense_config: 
+            hidden_layers: [128]
+            activation: LeakyReLU
+            norm_layer: LayerNorm
+        context_dim: 128 # d_hid
+        out_dim: 128
+
+    edge_indicator:
+        input_dim: 129
+        output_dim: 1
+        hidden_layers: [256, 128, 32]
+        activation: "LeakyReLU"
+        norm_layer: "LayerNorm"

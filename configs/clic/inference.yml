@@ -1,0 +1,102 @@
+init:
+  detector: CLIC
+
+  gpu: 0
+  precision: medium
+  chunk_size: 100
+  batch_size: 100 # 32
+  num_workers: 4
+
+  model:
+    # minixbig1x2 (1M)
+    config_path_v   : saved_checkpoints/clicxminixbig1x2xs2xxxds7kirm1yo/config_v.yml
+    config_path_ms1 : saved_checkpoints/clicxminixbig1x2xs2xxxds7kirm1yo/config_ms1.yml
+    config_path_ms2 : saved_checkpoints/clicxminixbig1x2xs2xxxds7kirm1yo/config_ms2.yml
+    checkpoint_path : saved_checkpoints/clicxminixbig1x2xs2xxxds7kirm1yo/checkpoints/epoch=18-val_total_loss=0.0153.ckpt
+
+
+  apply_cells_threshold: false # false | true
+  n_cells_threshold: 3000
+
+  ind_threshold_loose: 0.2
+  ind_threshold_plot: 0.5
+  store_seg: false
+
+items:
+  - info: "qq test"
+    run_pred: true
+    run_plot: false
+
+    enum_offset: 55000
+    
+    seg_path: path to clic/dijet/test_p8_ee_qq_ecm380_20k_seg_bw0.3_nocut.root
+    truth_path: path to test_p8_ee_qq_ecm380_20k_format.root
+    pred_path: null
+
+    dir_flag: "ee_qq_new"
+    n_events: -1
+    ind_threshold_loose: 0.1
+    ind_threshold_plot: 0.3
+    store_seg: false
+    plots:
+      scatter: {}
+
+
+
+  - info: "locality check control"
+    run_pred: true
+    run_plot: false
+
+    enum_offset: 55000
+    
+    seg_path: path to clic/dijet/locality_test/merged_chunk_11_bw0.3_clfrac1.0.root
+    truth_path: path to clic/p8_ee_qq_ecm380/merged_chunk_11_format.root
+    pred_path: null
+
+    dir_flag: "locality_check_fixed_seed_wrongev"
+    n_events: -1
+    ind_threshold_loose: 0.1
+    ind_threshold_plot: 0.3
+    store_seg: true
+    plots:
+      scatter: {}
+
+
+
+  - info: "locality check 0.2 subleading"
+    run_pred: true
+    run_plot: false
+
+    enum_offset: 55000
+    
+    seg_path: path to clic/dijet/locality_test/merged_chunk_11_bw0.3_clfrac0.2.root
+    truth_path: path to clic/p8_ee_qq_ecm380/merged_chunk_11_format.root
+    pred_path: null
+
+    dir_flag: "locality_check_fixed_seed_wrongev"
+    n_events: -1
+    ind_threshold_loose: 0.1
+    ind_threshold_plot: 0.3
+    store_seg: true
+    plots:
+      scatter: {}
+
+
+
+  - info: "locality check control"
+    run_pred: true
+    run_plot: false
+
+    enum_offset: 55000
+    
+    seg_path: path to clic/dijet/locality_test/merged_chunk_11_bw0.3_clfrac1.0.root
+    truth_path: path to clic/p8_ee_qq_ecm380/merged_chunk_11_format.root
+    pred_path: null
+
+    dir_flag: "locality_check_fixed_seed_2_wrongev"
+    n_events: -1
+    ind_threshold_loose: 0.1
+    ind_threshold_plot: 0.3
+    store_seg: true
+    plots:
+      scatter: {}

@@ -1,0 +1,127 @@
+init:
+  detector: COCOA
+
+  gpu: 0
+  precision: medium
+  chunk_size: 512 # 128
+  batch_size: 512 # 256
+  num_workers: 9
+
+  model:
+
+    config_path_v   : /saved_checkpoints/cocoaxminixv1x250kxs2xxxtgxrwsik/config_v.yml
+    config_path_ms1 : /saved_checkpoints/cocoaxminixv1x250kxs2xxxtgxrwsik/config_ms1.yml
+    config_path_ms2 : /saved_checkpoints/cocoaxminixv1x250kxs2xxxtgxrwsik/config_ms2.yml
+    checkpoint_path : /saved_checkpoints/cocoaxminixv1x250kxs2xxxtgxrwsik/checkpoints/epoch=42-val_total_loss=0.0307.ckpt
+
+  ind_threshold_loose: -0.1 # 0.2
+  ind_threshold_plot: 0.48
+  store_seg: false
+
+items:
+  - info: "dijet test"
+    run_pred: true
+    run_plot: false
+
+    seg_path: path to cocoa_dijet_test_seg_bw0.4.root
+    truth_path: null
+    pred_path: null
+
+    dir_flag: dijet_test
+    n_events: -1
+
+
+  - info: "ttbar"
+    run_pred: true
+    run_plot: false
+
+    seg_path: path to ttbar_skim_seg_bw0.4.root
+    truth_path: null
+    pred_path: null
+
+    dir_flag: ttbar
+    n_events: -1
+
+
+  - info: "ZHbb pTHatMin400"
+    run_pred: true
+    run_plot: false
+
+    seg_path: path to zhbb_boosted_seg_bw0.4.root
+    truth_path: null
+    pred_path: null
+
+    dir_flag: ZHbb_boosted
+    n_events: -1
+
+
+  - info: "single pions bin 0"
+    run_pred: true
+    run_plot: false
+
+    seg_path: path to pion_bin_0_seg_bw0.4.root
+    truth_path: null
+    pred_path: null
+
+    dir_flag: pion_bin0
+    n_events: -1
+
+
+  - info: "single pions bin 1"
+    run_pred: true
+    run_plot: false
+
+    seg_path: path to pion_bin_1_seg_bw0.4.root
+    truth_path: null
+    pred_path: null
+
+    dir_flag: pion_bin1
+    n_events: -1
+
+
+  - info: "single pions bin 2"
+    run_pred: true
+    run_plot: false
+
+    seg_path: path to pion_bin_2_seg_bw0.4.root
+    truth_path: null
+    pred_path: null
+
+    dir_flag: pion_bin2
+    n_events: -1
+
+
+  - info: "single pions bin 3"
+    run_pred: true
+    run_plot: false
+
+    seg_path: path to pion_bin_3_seg_bw0.4.root
+    truth_path: null
+    pred_path: null
+
+    dir_flag: pion_bin3
+    n_events: -1
+
+
+  - info: "single pions bin 4"
+    run_pred: true
+    run_plot: false
+
+    seg_path: path to pion_bin_4_seg_bw0.4.root
+    truth_path: null
+    pred_path: null
+
+    dir_flag: pion_bin4
+    n_events: -1
+
+
+  - info: "single pions bin 5"
+    run_pred: true
+    run_plot: false
+
+    seg_path: path to pion_bin_5_seg_bw0.4.root
+    truth_path: null
+    pred_path: null
+
+    dir_flag: pion_bin5
+    n_events: -1

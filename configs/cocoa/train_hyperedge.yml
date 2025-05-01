@@ -1,0 +1,62 @@
+project_name: hgpflow_v2
+
+device: cuda
+num_devices: 1
+
+train_components: [hyperedge]
+
+
+
+run_name: cocoaxminixv1x250kxs2
+config_path_v   : saved_checkpoints/cocoaxminixv1x250kxs1xxxer4oji6g/config_v.yml
+config_path_ms1 : saved_checkpoints/cocoaxminixv1x250kxs1xxxer4oji6g/config_ms1.yml
+checkpoint_ms1 : saved_checkpoints/cocoaxminixv1x250kxs1xxxer4oji6g/checkpoints/epoch=79-val_total_loss=0.0799.ckpt
+path_train: |
+  [f'saved_checkpoints/cocoaxminixv1x250kxs1xxxer4oji6g/inference/dijet/stage1_inference_cocoa_dijet_chunk_{n}_seg_bw0.4.root' for n in list(range(1, 501)) + list(range(1001, 3001)) if n not in [1550, 1716, 2062, 2164, 2405, 2716]]
+path_val: |
+  [f'/saved_checkpoints/cocoaxminixv1x250kxs1xxxer4oji6g/inference/dijet/stage1_inference_cocoa_dijet_chunk_{n}_seg_bw0.4.root' for n in range(501, 601)]
+
+
+
+resume_from_checkpoint: null
+
+num_epochs: 50
+eval_every_n_epoch: 1
+
+batchsize_train: 512
+batchsize_val: 1024
+
+
+reduce_ds_train: -1
+reduce_ds_val: -1
+
+num_workers: 4
+
+learning_rate: 1.0e-4
+lr_scheduler:
+    name: CustomLRScheduler
+    warm_start_epochs: 0.0
+    cosine_epochs: 0.999
+    eta_min: 5.0e-5
+    last_epoch: -1
+
+loss_wts: 
+  ch:
+    pt: 5.0
+    eta: 0.0
+    phi: 0.0
+    class: 0.05
+  neut:
+    ke: 20.0
+    eta: 0.0
+    phi: 0.0
+    class: 0.05
+
+class_based_wts:
+  ch: [1.0, 1.0, 1.0] # [ch, e, mu]
+  neut: [0.71, 0.29] # [nh, ph]
+
+base_root_dir: ...
+
+train_log_every_n_steps: 25
+apply_truth_ind_mask_on_live_plots: True # stage1 is responsible for correct indicatior

@@ -1,0 +1,87 @@
+name: hyperedge_model
+
+# model part 3
+hyperedge_model:
+    ind_threshold: 0.2 # needs updating
+
+    proxy_ch_kin_init_net:
+        input_dim: 4
+        output_dim: 16
+        hidden_layers: [64]
+        activation: 'LeakyReLU'
+        norm_layer: 'LayerNorm'
+
+    proxy_neut_kin_init_net:
+        input_dim: 4
+        output_dim: 16
+        hidden_layers: [64]
+        activation: 'LeakyReLU'
+        norm_layer: 'LayerNorm'
+
+    proxy_em_frac_init_net:
+        input_dim: 1
+        output_dim: 16
+        hidden_layers: [64]
+        activation: 'LeakyReLU'
+        norm_layer: 'LayerNorm'
+    
+    e_t_init_net:
+        input_dim: 128
+        output_dim: 46
+        hidden_layers: [64]
+        activation: 'LeakyReLU'
+        norm_layer: 'LayerNorm'
+
+    inc_times_node_feat_init_net:
+        input_dim: 128
+        output_dim: 48
+        hidden_layers: [64]
+        activation: 'LeakyReLU'
+        norm_layer: 'LayerNorm'
+
+
+    kin_nets:
+        # ch_kin_net:
+        #     input_dim: 128
+        #     output_dim: 3
+        #     hidden_layers: [128, 64]
+        #     activation: 'LeakyReLU'
+        #     norm_layer: 'LayerNorm'
+
+        ch_pt_net:
+            input_dim: 126 # 128
+            output_dim: 1
+            hidden_layers: [64, 64]
+            activation: 'LeakyReLU'
+            norm_layer: 'LayerNorm'
+
+        # neut_kin_net:
+        #     input_dim: 128
+        #     output_dim: 3
+        #     hidden_layers: [128, 64]
+        #     activation: 'LeakyReLU'
+        #     norm_layer: 'LayerNorm'
+
+        neut_ke_net:
+            input_dim: 126 # 128
+            output_dim: 1
+            hidden_layers: [64, 64]
+            activation: 'LeakyReLU'
+            norm_layer: 'LayerNorm'
+
+    class_nets:
+        ch_class_net:
+            input_dim: 126 # 128
+            output_dim: 3
+            hidden_layers: [64, 64]
+            activation: 'LeakyReLU'
+            norm_layer: 'LayerNorm'
+            # dropout: 0.05
+
+        neut_class_net:
+            input_dim: 126 # 128
+            output_dim: 2
+            hidden_layers: [64, 64]
+            activation: 'LeakyReLU'
+            norm_layer: 'LayerNorm'
+            # dropout: 0.05

@@ -1,0 +1,64 @@
+project_name: hgpflow_v2
+run_name: clicxminixbig1x2xs2x1
+
+device: cuda
+num_devices: 1
+
+train_components: [hyperedge]
+
+# clicxminixbig1x2xs1
+config_path_v  : saved_checkpoints/clicxminixbig1x2xs1xxxy1130kbsir/config_v.yml
+config_path_ms1: saved_checkpoints/clicxminixbig1x2xs1xxxy1130kbsir/config_ms1.yml
+checkpoint_ms1 : saved_checkpoints/clicxminixbig1x2xs1xxxy1130kbsir/checkpoints/epoch=84-val_total_loss=0.0552.ckpt
+
+path_train: |
+  [f'saved_checkpoints/clicxminixbig1x2xs1xxxy1130kbsir/inference/dijet/stage1_inference_merged_chunk_{n}_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root' for n in range(10)] + \
+  [f'saved_checkpoints/clicxminixbig1x2xs1xxxy1130kbsir/inference/dijet/stage1_inference_merged_chunk_{n}_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root' for n in range(20, 210)]
+
+path_val  : [
+  saved_checkpoints/clicxminixbig1x2xs1xxxy1130kbsir/inference/dijet/stage1_inference_merged_chunk_10_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root,
+  saved_checkpoints/clicxminixbig1x2xs1xxxy1130kbsir/inference/dijet/stage1_inference_merged_chunk_15_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root
+]
+
+resume_from_checkpoint: null
+
+num_epochs: 100
+eval_every_n_epoch: 1
+
+batchsize_train: 512
+batchsize_val: 1024
+
+
+reduce_ds_train: -1
+reduce_ds_val: -1
+
+num_workers: 5
+
+learning_rate: 1.0e-4
+# lr_scheduler:
+#     name: CustomLRScheduler
+#     warm_start_epochs: 0.05
+#     cosine_epochs: 0.8
+#     eta_min: 5.0e-5
+#     last_epoch: -1
+
+loss_wts: 
+  ch:
+    pt: 0.5
+    eta: 0.0
+    phi: 0.0
+    class: 0.5
+  neut:
+    ke: 0.5
+    eta: 0.0
+    phi: 0.0
+    class: 0.5
+
+class_based_wts:
+  ch: [1.0, 1.0, 1.0] # [ch, e, mu]
+  neut: [0.68, 0.32] # [nh, ph]
+
+base_root_dir: ...
+
+train_log_every_n_steps: 25
+apply_truth_ind_mask_on_live_plots: True # stage1 is responsible for correct indicatior

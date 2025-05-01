@@ -1,0 +1,38 @@
+init:
+  detector: CLIC
+
+  gpu: 0
+  chunk_size: 256
+  batch_size: 256
+  num_workers: 3
+  precision: medium
+
+
+  model:
+    # clicxminixbig1x2xs1 (1M)
+    config_path_v  : saved_checkpoints/clicxminixbig1x2xs1xxxy1130kbsir/config_v.yml
+    config_path_ms1: saved_checkpoints/clicxminixbig1x2xs1xxxy1130kbsir/config_ms1.yml
+    config_path_t  : saved_checkpoints/clicxminixbig1x2xs1xxxy1130kbsir/config_t.yml
+    checkpoint_path: saved_checkpoints/clicxminixbig1x2xs1xxxy1130kbsir/checkpoints/epoch=84-val_total_loss=0.0552.ckpt
+
+  ind_threshold_loose: 0.2
+
+
+items:
+  - info: "dijet train"
+    seg_path: |
+      [f'path to clic/dijet/chunks/merged_chunk_{n}_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root' for n in range(10)] + \
+      [f'path to clic/dijet/chunks/merged_chunk_{n}_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root' for n in range(20, 210)]
+    dir_flag: 'dijet'
+    output_path: null
+    n_events: -1
+
+
+  - info: "dijet val"
+    seg_path: [
+      path to clic/dijet/chunks/merged_chunk_10_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root,
+      path to clic/dijet/chunks/merged_chunk_15_segment_100MevCut_inclSingleNode_bw0.3_newTarget.root
+    ]
+    dir_flag: 'dijet'
+    output_path: null
+    n_events: -1
