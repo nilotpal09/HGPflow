@@ -1,4 +1,4 @@
-This repository contains the code used in the study, described in [HGPflow: Extending Hypergraph Particle Flow to Collider Event Reconstruction](https://arxiv.org/abs/2410.23236v1)
+This repository contains the code used in the study, described in [HGPflow: Extending Hypergraph Particle Flow to Collider Event Reconstruction](https://arxiv.org/abs/2410.23236)
 
 ---
 
