@@ -39,7 +39,9 @@ class Metrics:
         self.INC_LOSS_WT = config['inc_loss_wt']
         self.TRACK_FIX_WT = config['track_fix_wt']
 
-        fnp = np.load('incidence_dist_0.01_0.99_20bins.npz')
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(current_dir, 'incidence_dist_0.01_0.99_20bins.npz')
+        fnp = np.load(file_path)
         xs = 0.5 * (fnp['arr_0'][1:] + fnp['arr_0'][:-1])
         self.INC_CONTWT_X = torch.FloatTensor(xs[:-1])
         self.INC_CONTWT_Y = torch.FloatTensor(120_000 * 1/fnp['arr_1'])

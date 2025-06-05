@@ -1,6 +1,5 @@
 import torch.nn as nn
 from .iterative_refiner import IterativeRefiner
-from .sup_attn import SupAttnModel
 
 
 class HGLearnModel(nn.Module):
@@ -11,7 +10,6 @@ class HGLearnModel(nn.Module):
 
         model_dict = {
             'iterative_refiner': IterativeRefiner,
-            'sup_attn': SupAttnModel
         }
         self.model = model_dict[config['type']](config, max_edges)
 

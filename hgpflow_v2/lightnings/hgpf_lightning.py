@@ -12,7 +12,6 @@ from ..utility.comet_helper import save_plot
 from ..utility.helper_dicts import class_mass_dict
 
 from ..models.hgpflow_model import HGPFlowModel
-from .hgpf_lightning_supattn import HGPFLightningSA
 from .hgpf_lightning_iterativerefiner import HGPFLightningIR
 from .hgpf_lightning_hyperedge import HGPFLightningHyperedge
 from .lightning_helper import get_val_step_perf
@@ -43,7 +42,6 @@ class HGPFLightning(LightningModule):
                 print(f'ray initialized with {self.n_ray} cpus')
 
             lightning_dict = {
-                'sup_attn': HGPFLightningSA,
                 'iterative_refiner': HGPFLightningIR,
                 'hyperedge_model': HGPFLightningHyperedge
             }
