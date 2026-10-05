@@ -1,0 +1,35 @@
+# COCOA dijet_test smoke inference: source entries [0, 10), all Mean Shift partitions.
+# Run from the repository root:  python -m hgpflow_v2.eval -i configs/cocoa/smoke/inference_dijet_test_first10.yml
+# Required environment variable: HGPFLOW_RUN_DIR (new, empty run directory holding seg/ from the splitter).
+# gpu: null keeps CUDA_VISIBLE_DEVICES from the caller (select exactly one GPU there).
+init:
+  detector: COCOA
+
+  gpu: null
+  precision: medium
+  chunk_size: 128
+  batch_size: 64
+  num_workers: 2
+
+  model:
+    config_path_v   : saved_checkpoints/cocoaxminixv1x250kxs2xxxtgxrwsik/config_v.yml
+    config_path_ms1 : saved_checkpoints/cocoaxminixv1x250kxs2xxxtgxrwsik/config_ms1.yml
+    config_path_ms2 : saved_checkpoints/cocoaxminixv1x250kxs2xxxtgxrwsik/config_ms2.yml
+    checkpoint_path : saved_checkpoints/cocoaxminixv1x250kxs2xxxtgxrwsik/checkpoints/epoch=42-val_total_loss=0.0307.ckpt
+
+  ind_threshold_loose: -0.1
+  ind_threshold_plot: 0.48
+  store_seg: false
+
+items:
+  - info: "dijet test, source entries 0-9"
+    run_pred: true
+    run_plot: false
+
+    seg_path: ${HGPFLOW_RUN_DIR}/seg/dijet_test_e0-10_seg_bw0.4.root
+    truth_path: null
+    pred_path: ${HGPFLOW_RUN_DIR}/pred/pred_dijet_test_e0-10_seg_bw0.4_merged.root
+    rng_state_path: ${HGPFLOW_RUN_DIR}/pred/rng_state.pt
+
+    dir_flag: dijet_test
+    n_events: -1

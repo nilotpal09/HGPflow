@@ -1,3 +1,4 @@
+import os
 import uproot
 import numpy as np
 import awkward as ak
@@ -409,7 +410,9 @@ class PflowSamplerMini(Sampler):
         batch_order = np.random.permutation(np.arange(self.n_batches))
 
         # write to single np file both batch_order and self.index_to_batch, will load them in python later
-        np.savez('batch_order.npz', batch_order=batch_order, index_to_batch=self.index_to_batch)
+        # HGPFLOW_BATCH_ORDER_PATH overrides the default location (current directory)
+        np.savez(os.environ.get('HGPFLOW_BATCH_ORDER_PATH', 'batch_order.npz'),
+                 batch_order=batch_order, index_to_batch=self.index_to_batch)
 
         for i in batch_order:
             yield self.index_to_batch[i]

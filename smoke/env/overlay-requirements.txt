@@ -1,0 +1,4 @@
+# Installed with: python -m pip install --no-deps --require-hashes -r smoke/env/overlay-requirements.txt
+# into a venv created with --system-site-packages on top of the hgflow conda env (hgflow-conda-explicit.txt).
+flash-attn @ https://github.com/Dao-AILab/flash-attention/releases/download/v2.6.3/flash_attn-2.6.3+cu118torch2.3cxx11abiFALSE-cp310-cp310-linux_x86_64.whl --hash=sha256:b0e1924ee6866db683f5cb72c1002f6d4ca39e9efd79efec1ffc75aaecb2a576
+einops==0.8.0 --hash=sha256:9572fb63046264a862693b0a87088af3bdc8c068fde03de63453cbbde245465f

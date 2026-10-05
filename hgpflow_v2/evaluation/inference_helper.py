@@ -147,11 +147,14 @@ class InferenceHelper:
             output_filepath = \
                 os.path.join(output_dir, inf_dict.get('dir_flag', ''), 'pred_' + inf_dict['seg_path'].split('/')[-1].replace('.root', '_merged.root'))
         else:
-            output_filepath = inf_dict['output_filepath']
+            output_filepath = inf_dict['pred_path']
         return output_filepath
 
 
     def write_to_file(self, output_filepath):        
+        output_dir = os.path.dirname(output_filepath)
+        if output_dir != '':
+            os.makedirs(output_dir, exist_ok=True)
         merged_output_obj = TreeWriter(
             output_filepath, 'event_tree', chunk_size=self.chunk_size)
         merged_output_obj.write_dict_in_chunk(self.dict_to_write, desc='writing')
