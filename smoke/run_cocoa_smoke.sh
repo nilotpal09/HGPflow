@@ -82,6 +82,13 @@ print('uproot', uproot.__version__, 'awkward', awkward.__version__, 'numpy', num
 nvidia-smi --id="$CUDA_VISIBLE_DEVICES" --query-gpu=index,uuid,name,driver_version,memory.total,memory.used --format=csv > "$ENV/gpu.csv"
 (cd "$REPO" && sha256sum "$CONFIG" "$CKPT_DIR"/config_*.yml "$CKPT_DIR"/checkpoints/*.ckpt) > "$ENV/inputs.sha256"
 stat -c '%n %s %Y' "$SOURCE" > "$ENV/source_stat.txt"
+# resolved settings: inference config with ${VAR} expanded, and the segmentation arguments
+(cd "$REPO" && "$HGPFLOW_PYTHON" -c "import os, sys, yaml
+print(yaml.safe_dump(yaml.safe_load(os.path.expandvars(open(sys.argv[1]).read())), sort_keys=False))" "$CONFIG") \
+    > "$ENV/resolved_inference_config.yml"
+printf '%s\n' "source=$SOURCE" "tree=Out_Tree" "entry_start=$ENTRY_START" "entry_stop=$ENTRY_STOP" \
+    "bandwidth=0.4" "is_inference=true" "eventNumber_offset=0" "num_nodes_min=1" "mod_e_th=0.0" "skip_cells=false" \
+    > "$ENV/resolved_segmentation_args.txt"
 
 cd "$REPO/event_segmentation"
 step segmentation "$HGPFLOW_PYTHON" run_cocoa_event_splitter.py \
